@@ -9,13 +9,22 @@ CREATE TABLE IF NOT EXISTS departments (
 );
 -- add data to the table
 INSERT INTO departments (departmentId, departmentName, managerId)
-VALUES (20, 'Controlling', 41573);
-INSERT INTO departments (departmentId, departmentName, managerId)
-VALUES (21, 'Marketing', 69547);
-INSERT INTO departments (departmentId, departmentName, managerId)
-VALUES (22, 'R&D', 69004);
-INSERT INTO departments (departmentId, departmentName, managerId)
-VALUES (25, 'Production', 38002);
+VALUES (20, 'Controlling', 41573),
+    (21, 'Marketing', 69547),
+    (22, 'R&D', 69004),
+    (25, 'Production', 38002);
 -- retrieve data from table
 SELECT *
 FROM departments;
+-- similar example for employees table
+CREATE TABLE IF NOT EXISTS employees (
+    employeeId INTEGER PRIMARY KEY,
+    employeeName VARCHAR(255),
+    departmentId INTEGER
+);
+INSERT INTO employees (employeeId, employeeName, departmentId)
+VALUES (27004, 'A. Einstein', 22),
+    (38002, 'H. Ford', 25),
+    (41573, 'A. Smith', 20);
+SELECT *
+FROM employees;
