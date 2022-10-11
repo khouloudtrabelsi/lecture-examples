@@ -1,11 +1,11 @@
 -- update data in table
 UPDATE departments
-SET departmentName = 'Personalcontrolling'
+SET departmentName = 'Human Resources'
 WHERE departmentName = 'Controlling';
 -- delete row from table
 DELETE FROM departments
 WHERE departmentName = 'Marketing';
--- several SQL queries
+-- SQL query examples
 SELECT departmentName
 FROM departments
 WHERE departmentName LIKE 'PR%';
