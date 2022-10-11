@@ -28,8 +28,8 @@ public class ORMExamples {
 
         if (connected) {
             try {
-                // instantiate the Database Access Object (DAO) for handling DB operations
-                this.departmentDao = DaoManager.createDao(this.connectionSource, Department.class);
+                // TODO: instantiate the Database Access Object (DAO) for handling DB operations using the DaoManager
+                this.departmentDao;
 
                 // demonstrates operations using TableUtils class
                 this.performTableOperations();
@@ -39,12 +39,6 @@ public class ORMExamples {
 
                 // retrieves and logs the content od the table
                 this.retrieveTableContent();
-
-                // updates a table entry
-                this.updateTableContent();
-
-                // deletes a table entry
-                this.deleteTableContent();
 
                 // closes connection to the database
                 this.closeConnectionToDB();
@@ -106,13 +100,7 @@ public class ORMExamples {
      */
     private void fillTable() {
         try {
-            Department controllingDepartment =
-                    new Department(CONTROLLING_DEPARTMENT_ID, "Controlling", 41573);
-            this.departmentDao.create(controllingDepartment);
-
-            Department marketingDepartment =
-                    new Department(MARKETING_DEPARTMENT_ID, "Marketing", 69547);
-            this.departmentDao.create(marketingDepartment);
+            // TODO: fill table using this.departmentDao
 
         } catch (SQLException exception) {
             this.logSQLException(exception);
@@ -124,66 +112,8 @@ public class ORMExamples {
      */
     private void retrieveTableContent() {
         try {
-            // get all entries of the table
-            List<Department> departmentsList = departmentDao.queryForAll();
-            for (Department department : departmentsList) {
-                String departmentName = department.getDepartmentName();
-                LOGGER.log(Level.INFO, "Department name: " + departmentName);
-            }
+            // TODO: retrieve table content using this.departmentDao
 
-            // get entries that match the given equality condition
-            List<Department> searchedDepartments =
-                    departmentDao.queryForEq("departmentName", "Controlling");
-            for (Department department : searchedDepartments) {
-                Integer departmentId = department.getDepartmentId();
-                LOGGER.log(Level.INFO, "Department ID: " + departmentId);
-            }
-
-            // get entry by Id
-            Department searchedDepartmentById = departmentDao.queryForId(20);
-            if (searchedDepartmentById != null) {
-                String departmentName = searchedDepartmentById.getDepartmentName();
-                LOGGER.log(Level.INFO, "Department name: " + departmentName);
-            }
-        } catch (SQLException exception) {
-            this.logSQLException(exception);
-        }
-    }
-
-    /*
-     * Updates the content of the table.
-     */
-    private void updateTableContent() {
-        try {
-            Department controllingDepartment = departmentDao.queryForId(CONTROLLING_DEPARTMENT_ID);
-            if (controllingDepartment != null) {
-
-                // for demonstration, refresh object to update in with possible changes in the DB
-                departmentDao.refresh(controllingDepartment);
-
-                // update data in table
-                controllingDepartment.setDepartmentName("Human Resources");
-                int numberOfUpdatedRows = departmentDao.update(controllingDepartment);
-                LOGGER.log(Level.INFO, "Number of updated rows: " + numberOfUpdatedRows);
-            }
-        } catch (SQLException exception) {
-            this.logSQLException(exception);
-        }
-    }
-
-    private void deleteTableContent() {
-        try {
-            Department marketingDepartment = departmentDao.queryForId(MARKETING_DEPARTMENT_ID);
-            if (marketingDepartment != null) {
-                // delete row
-                int numberOfUpdatedRows = departmentDao.delete(marketingDepartment);
-
-                // alternative delete method by Id:
-                // numberOfUpdatedRows =
-                // departmentDao.deleteById(marketingDepartment.getDepartmentNr());
-
-                LOGGER.log(Level.INFO, "Number of deleted rows: " + numberOfUpdatedRows);
-            }
         } catch (SQLException exception) {
             this.logSQLException(exception);
         }
