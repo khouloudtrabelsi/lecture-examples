@@ -17,8 +17,5 @@ VALUES (22, 'R&D', 69004);
 INSERT INTO departments (departmentId, departmentName, managerId)
 VALUES (25, 'Production', 38002);
 -- retrieve data from table
-SELECT departmentId,
-    departmentName
-FROM departments;
 SELECT *
 FROM departments;
