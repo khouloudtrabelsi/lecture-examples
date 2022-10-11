@@ -3,52 +3,50 @@ package de.unistuttgart.iste.pe2.model;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "ABTEILUNG")
+@DatabaseTable(tableName = "departments")
 public class Department {
 
-@DatabaseField(id = true)
-private Integer departmentNr;
+    @DatabaseField(id = true)
+    private Integer departmentId;
 
-@DatabaseField(columnName = "BEZEICHNUNG", defaultValue = "Unknown")
-private String name;
+    @DatabaseField(columnName = "departmentName", defaultValue = "Unknown")
+    private String departmentName;
 
-@DatabaseField(columnName = "ABTEILUNGSLEITER")
-private Integer manager;
+    @DatabaseField(columnName = "managerId")
+    private Integer managerId;
 
     /*
-    * No-arguments constructor required by the OR-Mapper
-    */
-    public Department() {
+     * No-arguments constructor required by the OR-Mapper
+     */
+    public Department() {}
+
+    public Department(Integer departmentId, String departmentName, Integer managerId) {
+        this.departmentId = departmentId;
+        this.departmentName = departmentName;
+        this.managerId = managerId;
     }
 
-    public Department(Integer departmentNr, String name, Integer manager) {
-        this.departmentNr = departmentNr;
-        this.name = name;
-        this.manager = manager;
+    public Integer getDepartmentId() {
+        return departmentId;
     }
 
-    public Integer getDepartmentNr() {
-        return departmentNr;
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
     }
 
-    public void setDepartmentNr(Integer departmentNr) {
-        this.departmentNr = departmentNr;
+    public String getDepartmentName() {
+        return departmentName;
     }
 
-    public String getName() {
-        return name;
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Integer getManagerId() {
+        return managerId;
     }
 
-    public Integer getManager() {
-        return manager;
+    public void setManagerId(Integer managerId) {
+        this.managerId = managerId;
     }
-
-    public void setManager(Integer manager) {
-        this.manager = manager;
-    }
-
 }

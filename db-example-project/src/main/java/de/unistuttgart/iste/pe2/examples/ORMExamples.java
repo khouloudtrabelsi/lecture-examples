@@ -1,23 +1,20 @@
 package de.unistuttgart.iste.pe2.examples;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-
 import de.unistuttgart.iste.pe2.model.Department;
 
 public class ORMExamples {
     private static Logger LOGGER = Logger.getLogger(ORMExamples.class.getName());
-    private static int CONTROLLING_DEPARTMENT_NR = 20;
-    private static int MARKETING_DEPARTMENT_NR = 21;
+    private static int CONTROLLING_DEPARTMENT_ID = 20;
+    private static int MARKETING_DEPARTMENT_ID = 21;
 
     private ConnectionSource connectionSource;
     private Dao<Department, Integer> departmentDao;
@@ -27,7 +24,7 @@ public class ORMExamples {
      */
     public void runDemonstration() {
         // creates connection to a MariaDB installed on localhost
-        boolean connected = this.connectToDB("jdbc:mariadb://localhost:3306/pe2", "root", null);
+        boolean connected = this.connectToDB("jdbc:mariadb://localhost:3306/pe2", "root", "root");
 
         if (connected) {
             try {
@@ -77,7 +74,7 @@ public class ORMExamples {
     private void closeConnectionToDB() {
         try {
             this.connectionSource.close();
-        } catch (IOException exception) {
+        } catch (Exception exception) {
             LOGGER.log(Level.SEVERE, "Error message: " + exception.getMessage());
         }
     }
@@ -109,10 +106,12 @@ public class ORMExamples {
      */
     private void fillTable() {
         try {
-            Department controllingDepartment = new Department(CONTROLLING_DEPARTMENT_NR, "Controlling", 41573);
+            Department controllingDepartment =
+                    new Department(CONTROLLING_DEPARTMENT_ID, "Controlling", 41573);
             this.departmentDao.create(controllingDepartment);
 
-            Department marketingDepartment = new Department(MARKETING_DEPARTMENT_NR, "Marketing", 69547);
+            Department marketingDepartment =
+                    new Department(MARKETING_DEPARTMENT_ID, "Marketing", 69547);
             this.departmentDao.create(marketingDepartment);
 
         } catch (SQLException exception) {
@@ -128,21 +127,22 @@ public class ORMExamples {
             // get all entries of the table
             List<Department> departmentsList = departmentDao.queryForAll();
             for (Department department : departmentsList) {
-                String departmentName = department.getName();
+                String departmentName = department.getDepartmentName();
                 LOGGER.log(Level.INFO, "Department name: " + departmentName);
             }
 
             // get entries that match the given equality condition
-            List<Department> searchedDepartments = departmentDao.queryForEq("BEZEICHNUNG", "Controlling");
+            List<Department> searchedDepartments =
+                    departmentDao.queryForEq("departmentName", "Controlling");
             for (Department department : searchedDepartments) {
-                Integer departmentNr = department.getDepartmentNr();
-                LOGGER.log(Level.INFO, "Department number: " + departmentNr);
+                Integer departmentId = department.getDepartmentId();
+                LOGGER.log(Level.INFO, "Department ID: " + departmentId);
             }
 
             // get entry by Id
             Department searchedDepartmentById = departmentDao.queryForId(20);
             if (searchedDepartmentById != null) {
-                String departmentName = searchedDepartmentById.getName();
+                String departmentName = searchedDepartmentById.getDepartmentName();
                 LOGGER.log(Level.INFO, "Department name: " + departmentName);
             }
         } catch (SQLException exception) {
@@ -155,15 +155,14 @@ public class ORMExamples {
      */
     private void updateTableContent() {
         try {
-            Department controllingDepartment = departmentDao.queryForId(CONTROLLING_DEPARTMENT_NR);
+            Department controllingDepartment = departmentDao.queryForId(CONTROLLING_DEPARTMENT_ID);
             if (controllingDepartment != null) {
 
-                // for demonstration, refresh object to update in with possible changes in the
-                // DB
+                // for demonstration, refresh object to update in with possible changes in the DB
                 departmentDao.refresh(controllingDepartment);
 
                 // update data in table
-                controllingDepartment.setName("Personalcontrolling");
+                controllingDepartment.setDepartmentName("Human Resources");
                 int numberOfUpdatedRows = departmentDao.update(controllingDepartment);
                 LOGGER.log(Level.INFO, "Number of updated rows: " + numberOfUpdatedRows);
             }
@@ -174,7 +173,7 @@ public class ORMExamples {
 
     private void deleteTableContent() {
         try {
-            Department marketingDepartment = departmentDao.queryForId(MARKETING_DEPARTMENT_NR);
+            Department marketingDepartment = departmentDao.queryForId(MARKETING_DEPARTMENT_ID);
             if (marketingDepartment != null) {
                 // delete row
                 int numberOfUpdatedRows = departmentDao.delete(marketingDepartment);

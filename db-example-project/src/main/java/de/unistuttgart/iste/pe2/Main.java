@@ -8,9 +8,9 @@ public class Main {
 	public static void main(String[] args) {
 
 		JDBCExamples jdbcExamples = new JDBCExamples();
-		ORMExamples ormExamples = new ORMExamples();
-
 		jdbcExamples.runDemonstration();
-		//ormExamples.runDemonstration();
+
+		// ORMExamples ormExamples = new ORMExamples();
+		// ormExamples.runDemonstration();
 	}
 }
