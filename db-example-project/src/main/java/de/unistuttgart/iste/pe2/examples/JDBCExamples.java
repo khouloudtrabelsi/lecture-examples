@@ -52,20 +52,50 @@ public class JDBCExamples {
             // create statement
             Statement statement = this.connection.createStatement();
 
-            // TODO: use statetment to create and use a database with the name "PE2"
-            
+            // create and use database
+            statement.executeUpdate("CREATE DATABASE IF NOT EXISTS PE2;");
+            statement.executeUpdate("USE PE2;");
+
             LOGGER.log(Level.INFO, "Created PE2 database");
 
-            // TODO: create table in newly created database
-            
+            // drop table for demonstration purposes
+            statement.executeUpdate("DROP TABLE IF EXISTS departments;");
+
+            // create table in newly created database
+            statement.executeUpdate(
+                    "CREATE TABLE IF NOT EXISTS departments (departmentId INTEGER PRIMARY KEY, departmentName VARCHAR(256), managerId INTEGER);");
+
             LOGGER.log(Level.INFO, "Created table 'departments'! Inserting entries...");
 
-            // TODO: fill table with entries
-            
+            // fill table
+            statement.executeUpdate(
+                    "INSERT INTO departments (departmentId, departmentName, managerId) VALUES (20, 'Controlling', 41573);");
+            statement.executeUpdate(
+                    "INSERT INTO departments (departmentId, departmentName, managerId) VALUES (21, 'Marketing', 69547);");
 
-            // TODO: retrieve a ResultSet for the table content
+            LOGGER.log(Level.INFO, "Inserting via PreparedStatement...");
+            // insert content into table using a prepared statement
+            String preparedSQLstring =
+                    "INSERT INTO departments (departmentId, departmentName, managerId) VALUES (?, ?, ?);";
+            PreparedStatement preparedStatement = connection.prepareStatement(preparedSQLstring);
+            preparedStatement.setInt(1, 22);
+            preparedStatement.setString(2, "R&D");
+            preparedStatement.setInt(3, 69004);
+            int rowCount = preparedStatement.executeUpdate();
+            LOGGER.log(Level.INFO, "Number of affected rows: " + rowCount);
+
             LOGGER.log(Level.INFO, "Starting SELECT query...");
-            
+            // retrieve content of table
+            ResultSet result =
+                    statement.executeQuery("SELECT * FROM departments WHERE departmentId > 10");
+
+            // iterate through results
+            while (result.next()) {
+                String identification = result.getString("departmentName");
+                LOGGER.log(Level.INFO, "departments identification: " + identification);
+            }
+            result.close();
+
         } catch (SQLException exception) {
             LOGGER.log(Level.SEVERE, "Error code: " + exception.getErrorCode());
             LOGGER.log(Level.SEVERE, "Error message: " + exception.getMessage());
