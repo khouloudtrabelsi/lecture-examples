@@ -7,13 +7,36 @@
 
   <body>
     <!-- write HTML here -->
+  <div>
+      <h1>Click the Button To Change the List</h1>
+      <ul id="list">
+        <li>Element 1</li>
+        <li>Element 2</li>
+       <li>Element 3</li>
+
+      </ul>
+      <button id="myButton">Click right here buddy!</button>
+    </div>
 
     <style>
       /* write CSS here */
+#list {
+        color: green;
+      }
     </style>
 
     <script>
       // write JavaScript here
+function changeList() {
+        const list = document.querySelector("#list");
+        const item = document.createElement("li");
+        item.appendChild(document.createTextNode("Element n"));
+        list.appendChild(item);
+      }
+
+      const btn = document.querySelector("#myButton");
+      btn.addEventListener("click", changeList);
+    
     </script>
   </body>
 </html>
